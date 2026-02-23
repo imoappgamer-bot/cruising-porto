@@ -5,6 +5,7 @@ import Map from './pages/Map';
 import Profile from './pages/Profile';
 import Location from './pages/Location';
 import Navbar from './components/Navbar';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
   const [user, setUser] = React.useState(null);
@@ -37,6 +38,7 @@ function App() {
   }
 
   return (
+        <ErrorBoundary>
     <BrowserRouter>
       {user && <Navbar user={user} onLogout={handleLogout} />}
       <Routes>
@@ -58,6 +60,11 @@ function App() {
         />
       </Routes>
     </BrowserRouter>
+              </ErrorBoundary>
+
+Commit: feat: Wrap App with ErrorBoundary component
+
+Added ErrorBoundary wrapper around entire app to catch and handle React errors gracefully with Portuguese error messages and recovery options.
   );
 }
 
