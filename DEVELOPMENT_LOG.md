@@ -1,5 +1,152 @@
 # Cruising Porto - Development Log
 
+## Session: February 23, 2026 (7 PM - 8 PM WET) - Reusable Components Development
+
+**Location**: Porto, PT
+**Developer**: AI Assistant (Comet)
+**Status**: Frontend Web Components Library Enhancement (85%)
+
+### Summary
+
+Continued development session focusing on:
+- Creating reusable UI components for frontend web
+- Building component library following NEXT_STEPS.md guidance
+- Implementing Button and Rating components with full styling
+
+### Features Completed This Session
+
+#### Web Components - Reusable UI Library ✅
+
+1. **Button.jsx** (`web/src/components/Button.jsx`) - Complete
+   - Multiple variants (primary, secondary, danger, success, outline)
+   - Size options (small, medium, large)
+   - Loading states with animated spinner
+   - Icon support with left/right positioning
+   - Full-width option
+   - Disabled state handling
+   - Accessibility attributes (aria-busy)
+   - Portuguese labels ("A carregar")
+   - Click handler with prevention when disabled/loading
+
+2. **Button.css** (`web/src/components/Button.css`) - Complete
+   - Brand gradient colors (#667eea, #764ba2)
+   - All variant styles with hover effects
+   - Size variant styling
+   - Loading spinner animation (@keyframes spin)
+   - Icon positioning (left/right)
+   - Focus states with box-shadow
+   - Dark mode support
+   - Mobile responsiveness
+   - Smooth transitions (0.3s ease)
+
+3. **Rating.jsx** (`web/src/components/Rating.jsx`) - Complete
+   - Interactive star rating system (0-5 stars)
+   - SVG stars with gradient fill
+   - Hover preview functionality
+   - Read-only mode for display
+   - Customizable max stars (default 5)
+   - Half-star precision support
+   - Size variants (small, medium, large)
+   - Optional numeric value display
+   - Customizable colors (star/empty)
+   - Accessibility support (ARIA labels, role="button")
+   - Portuguese labels ("Avaliar X de Y estrelas")
+   - useState for hover and current rating
+
+4. **Rating.css** (`web/src/components/Rating.css`) - Complete
+   - Interactive star hover effects (scale 1.15)
+   - Star pulse animation (@keyframes pulse-star)
+   - Size variant styling (16px, 24px, 32px)
+   - Read-only state styling
+   - Focus-visible indicators
+   - Dark mode support
+   - Mobile optimizations
+   - Drop shadow for visibility
+   - Smooth transitions (0.2s ease)
+
+### Technical Details
+
+#### Component Architecture
+
+**Button Component Pattern:**
+- Functional component with extensive props
+- Dynamic class building with filter(Boolean).join(' ')
+- Conditional rendering for loading state
+- Event handler with disabled/loading checks
+- Spread operator for additional props (...rest)
+
+**Rating Component Pattern:**
+- Functional component with useState hooks
+- SVG with linearGradient for partial fills
+- Dynamic fill calculation (getStarFillPercentage)
+- Interactive handlers (onClick, onMouseEnter, onMouseLeave)
+- Render function for star generation (renderStars)
+
+### Commits Made
+
+1. `feat: Add Button reusable component with variants` - Button.jsx
+2. `style: Add Button.css with comprehensive styling` - Button.css
+3. `feat: Add Rating reusable component with interactive stars` - Rating.jsx
+4. `style: Add Rating.css with comprehensive styling` - Rating.css
+
+### Files Created
+
+**New Files:**
+- `web/src/components/Button.jsx`
+- `web/src/components/Button.css`
+- `web/src/components/Rating.jsx`
+- `web/src/components/Rating.css`
+
+### Progress Metrics
+
+- **Frontend Web**: 85% complete (up from 80%)
+  - ✅ All core pages implemented
+  - ✅ Error handling implemented
+  - ✅ Loading states implemented
+  - ✅ Components library expanded (Button, Rating added)
+  - ✅ LocationCard exists
+  - ✅ Navbar exists
+  - ⏳ Additional components needed (Input, Modal, Card)
+  - ⏳ CSS styling refinement ongoing
+
+### Component Library Status
+
+**Existing Components:**
+- LocationCard (with CSS)
+- Navbar (with CSS)
+- Button (NEW - with CSS)
+- Rating (NEW - with CSS)
+
+**Components to Create:**
+- Input (text, email, password, textarea)
+- Modal (dialog, alerts)
+- Card (generic container)
+- Tabs (navigation)
+- Dropdown (select menus)
+
+### Next Steps (Aligned with NEXT_STEPS.md)
+
+Remaining Week 2 priorities:
+1. ✅ Reusable components creation (in progress)
+2. ⏳ Input component implementation
+3. ⏳ Modal component implementation  
+4. ⏳ CSS styling improvements for all pages
+5. ⏳ Testing and bug fixes
+
+### Notes
+
+- All components follow Portuguese translation standards
+- Brand colors (#667eea, #764ba2) consistently applied
+- Accessibility features (ARIA labels, keyboard navigation)
+- Mobile-first responsive design principles
+- Dark mode support included
+- Component reusability prioritized
+- Clean separation of JSX and CSS files
+
+---
+
+
+
 ## Session: February 23, 2026 (5 PM - 6 PM WET) - Continuation
 
 **Location**: Porto, PT
