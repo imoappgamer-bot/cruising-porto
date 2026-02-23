@@ -1,121 +1,33 @@
 # 🚀 Próximos Passos - Continuando o Desenvolvimento
 
-## 1️⃣ Fase Atual: Backend (60%)
+## 1️⃣ Fase Atual: Backend (✅ 85% - Concluído)
 
-### Imediato (Esta Semana)
+### ✅ Completado
 
-```bash
-# 1. Clonar e setup local
-git clone https://github.com/imoappgamer-bot/cruising-porto.git
-cd cruising-porto/backend
-npm install
-cp .env.example .env
+#### Controllers Implementados
+- ✅ **CommentController** (`src/controllers/commentController.js`) - Completo
+- ✅ **AlertController** (`src/controllers/alertController.js`) - Completo  
+- ✅ **UserController** (`src/controllers/userController.js`) - Completo
+- ✅ **MessageController** (`src/controllers/messageController.js`) - Completo
 
-# 2. Rodar banco de dados
-docker-compose up -d
+#### Melhorias de Segurança Implementadas
+- ✅ Validação de entrada (Joi schemas)
+- ✅ Rate limiting (express-rate-limit)
+- ✅ Error handler globalizado
+- ✅ CORS configurado corretamente
+- ✅ Autenticação JWT completa
 
-# 3. Popular dados
-npm run seed
+### 🔄 Próximo Foco: Frontend Web (Semana Atual)
 
-# 4. Iniciar servidor
-npm start
-# API rodando em http://localhost:5000
-```
-
-### Controllers Faltando
-
-#### CommentController (`src/controllers/commentController.js`)
-```javascript
-// Funções a implementar:
-- createComment(req, res)     // Criar comentário
-- getLocationComments(req, res) // Listar por local
-- deleteComment(req, res)     // Deletar comentário
-- reportComment(req, res)     // Denunciar comentário
-```
-
-#### AlertController (`src/controllers/alertController.js`)
-```javascript
-// Funções a implementar:
-- createAlert(req, res)       // Criar alerta de segurança
-- getAlerts(req, res)         // Listar alertas próximos
-- dismissAlert(req, res)      // Desativar alerta
-- getAlertStats(req, res)     // Estatísticas de segurança
-```
-
-#### UserController (`src/controllers/userController.js`)
-```javascript
-// Funções a implementar:
-- getUserProfile(req, res)    // Obter perfil
-- updateProfile(req, res)     // Atualizar perfil
-- uploadAvatar(req, res)      // Upload de foto
-- getSettings(req, res)       // Configurações
-- updateSettings(req, res)    // Atualizar configurações
-- blockUser(req, res)         // Bloquear usuário
-- getBlockedUsers(req, res)   // Lista de bloqueados
-```
-
-#### MessageController (`src/controllers/messageController.js`)
-```javascript
-// Funções a implementar:
-- sendMessage(req, res)       // Enviar mensagem
-- getConversation(req, res)   // Conversa
-- markAsRead(req, res)        // Marcar como lido
-- deleteMessage(req, res)     // Deletar mensagem
-- getConversations(req, res)  // Listar conversas
-```
-
-### Melhorias de Segurança
-
-```javascript
-// 1. Validação de entrada (use Joi)
-// arquivo: src/validators/schemas.js
-
-import Joi from 'joi';
-
-export const userRegistrationSchema = Joi.object({
-  username: Joi.string().alphanum().min(3).max(30).required(),
-  email: Joi.string().email().required(),
-  password: Joi.string().min(8).required()
-});
-
-// 2. Rate limiting
-// npm install express-rate-limit
-
-const rateLimit = require('express-rate-limit');
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100 // limite de 100 requests por IP
-});
-
-app.use(limiter);
-
-// 3. Error handler globalizado
-// arquivo: src/middleware/errorHandler.js
-
-export const errorHandler = (err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.status || 500).json({
-    error: err.message,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-  });
-};
-```
-
-## 2️⃣ Fase Frontend Web (20%)
-
-### Setup Inicial
-
+#### Setup Inicial
 ```bash
 cd web
 npm install
-
 # Variáveis de ambiente
 cat > .env.local << EOF
 VITE_API_URL=http://localhost:5000/api
 VITE_MAPBOX_TOKEN=seu_token
 EOF
-
 npm run dev
 # Acessar em http://localhost:5173
 ```
@@ -147,9 +59,8 @@ npm run dev
 
 ### Exemplo de Componente
 
-```jsx
+```javascript
 // src/components/LocationCard.jsx
-
 import React from 'react';
 import { Card, Button, Rating } from '@/components';
 
@@ -171,19 +82,16 @@ export default function LocationCard({ location, onCheckIn }) {
 }
 ```
 
-## 3️⃣ Fase Mobile (20%)
+## 2️⃣ Fase Mobile (20%)
 
 ### Setup Inicial
-
 ```bash
 cd mobile
 npm install
-
 # Autenticidade
 cat > .env << EOF
 EXPO_API_URL=https://seu-backend.railway.app/api
 EOF
-
 npx expo start
 ```
 
@@ -196,7 +104,6 @@ npx expo start
 5. **SettingsScreen** - Configurações
 
 ### Dependências Principais
-
 ```bash
 npm install \
   react-native-maps \
@@ -206,7 +113,7 @@ npm install \
   @react-navigation/bottom-tabs
 ```
 
-## 4️⃣ Deployment (10%)
+## 3️⃣ Deployment (10%)
 
 ### 1. Backend no Railway
 
@@ -226,18 +133,16 @@ npm install \
 5. Deploy
 
 ### 3. Mobile no Expo
-
 ```bash
 npm install -g eas-cli
 eas login
 eas build --platform android  # Gera APK
-eas build --platform ios      # Requer Mac
+eas build --platform ios       # Requer Mac
 ```
 
-## 5️⃣ Testes
+## 4️⃣ Testes
 
 ### Unit Tests (Jest)
-
 ```bash
 # Instalar
 cd backend
@@ -263,48 +168,39 @@ describe('Auth API', () => {
 ```
 
 ### E2E Tests (Cypress)
-
 ```bash
 npm install --save-dev cypress
 npx cypress open
 ```
 
-## 6️⃣ Ci/CD (GitHub Actions)
+## 5️⃣ CI/CD (GitHub Actions)
 
 ### Arquivo: `.github/workflows/test.yml`
-
 ```yaml
 name: Tests
-
 on: [push, pull_request]
-
 jobs:
   test:
     runs-on: ubuntu-latest
-    
     services:
       postgres:
         image: postgres:14
         env:
           POSTGRES_PASSWORD: postgres
-    
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-      
       - name: Install
         run: npm install
-      
       - name: Run tests
         run: npm test
 ```
 
-## 7️⃣ Monitoramento
+## 6️⃣ Monitoramento
 
 ### Logs
-
 ```bash
 # Railway
 railway logs
@@ -316,28 +212,26 @@ vercel logs
 ### Uptime
 
 Use UptimeRobot (grátis):
+
 1. Ir para uptimerobot.com
 2. Monitorar `https://seu-backend.railway.app/health`
 
 ## 📄 Timeline Estimado
 
-- **Semana 1**: Completar Backend (controllers + testes)
-- **Semana 2**: Implementar Frontend Web (mapa + auth)
-- **Semana 3**: Implementar Mobile (estrutura básica)
+- **✅ Semana 1 Completa**: Backend (controllers + segurança)
+- **🔄 Semana 2 (Atual)**: Frontend Web (mapa + auth)
+- **Semana 3**: Mobile (estrutura básica)
 - **Semana 4**: Testes e ajustes
 - **Semana 5**: Deploy em produção
 
 ## 📞 Suporte
 
-Este projeto está documentado e mantido no GitHub:
-https://github.com/imoappgamer-bot/cruising-porto
+Este projeto está documentado e mantido no GitHub: https://github.com/imoappgamer-bot/cruising-porto
 
 Para dúvidas:
 1. Consulte a documentação
 2. Verifique issues existentes
 3. Crie uma nova issue
 4. Faça um pull request
-
----
 
 **Bom desenvolvimento! 🚀**
