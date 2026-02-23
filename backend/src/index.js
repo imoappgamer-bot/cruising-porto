@@ -5,6 +5,7 @@ import sequelize from './config/database.js';
 import authRoutes from './routes/auth.routes.js';
 import locationRoutes from './routes/location.routes.js';
 import checkinRoutes from './routes/checkin.routes.js';
+import commentRoutes from './routes/comment.routes.js';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/locations', locationRoutes);
 app.use('/api/checkins', checkinRoutes);
+app.use('/api/comments', commentRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
