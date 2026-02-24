@@ -72,4 +72,10 @@ export const favoriteService = {
   list: () => apiClient.get('/favorites'),
 };
 
+                                  // Funções auxiliares de Usuário
+export const getUserProfile = () => userService.getProfile();
+export const updateUserProfile = (data) => userService.updateProfile(data);
+
+
+
 export default apiClient;
