@@ -19,12 +19,20 @@ const User = sequelize.define('User', {
   last_login: { type: DataTypes.DATE },
   private_mode: { type: DataTypes.BOOLEAN, defaultValue: false },
   show_distance_only: { type: DataTypes.BOOLEAN, defaultValue: true },
+  // Consentimentos e versões de termos
+  acceptedTermsVersion: { type: DataTypes.STRING, allowNull: true },
+  acceptedPrivacyVersion: { type: DataTypes.STRING, allowNull: true },
+  locationConsent: { type: DataTypes.BOOLEAN, defaultValue: false },
+  proximityConsent: { type: DataTypes.BOOLEAN, defaultValue: false },
+  behavioralPushConsent: { type: DataTypes.BOOLEAN, defaultValue: false },
   created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   updated_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-}, { hooks: {
-  beforeCreate: async (user) => { user.password = await bcrypt.hash(user.password, 10); },
-  beforeUpdate: async (user) => { if (user.changed('password')) user.password = await bcrypt.hash(user.password, 10); }
-}});
+}, {
+  hooks: {
+    beforeCreate: async (user) => { user.password = await bcrypt.hash(user.password, 10); },
+    beforeUpdate: async (user) => { if (user.changed('password')) user.password = await bcrypt.hash(user.password, 10); },
+  },
+});
 
 // LOCATION MODEL
 const Location = sequelize.define('Location', {
@@ -66,6 +74,11 @@ const Comment = sequelize.define('Comment', {
   rating: { type: DataTypes.INTEGER, validate: { min: 1, max: 5 } },
   tags: { type: DataTypes.ARRAY(DataTypes.STRING), defaultValue: [] },
   is_moderated: { type: DataTypes.BOOLEAN, defaultValue: false },
+  // Moderação por IA
+  moderationStatus: {
+    type: DataTypes.ENUM('approved', 'pending_review', 'rejected'),
+    defaultValue: 'approved',
+  },
   created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   updated_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
 });
@@ -88,28 +101,27 @@ const Message = sequelize.define('Message', {
   to_user_id: { type: DataTypes.UUID, allowNull: false },
   text: { type: DataTypes.TEXT, allowNull: false },
   read: { type: DataTypes.BOOLEAN, defaultValue: false },
+  // Moderação por IA
+  moderationStatus: {
+    type: DataTypes.ENUM('approved', 'pending_review', 'rejected'),
+    defaultValue: 'approved',
+  },
   created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
 });
 
 // RELATIONSHIPS
 User.hasMany(CheckIn, { foreignKey: 'user_id', onDelete: 'CASCADE' });
 CheckIn.belongsTo(User, { foreignKey: 'user_id' });
-
 Location.hasMany(CheckIn, { foreignKey: 'location_id', onDelete: 'CASCADE' });
 CheckIn.belongsTo(Location, { foreignKey: 'location_id' });
-
 User.hasMany(Comment, { foreignKey: 'user_id', onDelete: 'CASCADE' });
 Comment.belongsTo(User, { foreignKey: 'user_id' });
-
 Location.hasMany(Comment, { foreignKey: 'location_id', onDelete: 'CASCADE' });
 Comment.belongsTo(Location, { foreignKey: 'location_id' });
-
 Location.hasMany(Alert, { foreignKey: 'location_id', onDelete: 'CASCADE' });
 Alert.belongsTo(Location, { foreignKey: 'location_id' });
-
 User.hasMany(Alert, { foreignKey: 'user_id', onDelete: 'CASCADE' });
 Alert.belongsTo(User, { foreignKey: 'user_id' });
-
 User.hasMany(Message, { as: 'sent_messages', foreignKey: 'from_user_id', onDelete: 'CASCADE' });
 User.hasMany(Message, { as: 'received_messages', foreignKey: 'to_user_id', onDelete: 'CASCADE' });
 
