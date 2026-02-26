@@ -1,0 +1,167 @@
+{
+  "plans": {
+    "free": {
+      "name": "Free",
+      "label": "Seguranca basica para todos",
+      "price_month_eur": 0,
+      "features": {
+        "map": {
+          "spots_full_access": true,
+          "reviews_full_access": true,
+          "risk_alerts_view": true
+        },
+        "profile": {
+          "photos_max": 2,
+          "show_distance_mode": "range_only",
+          "show_exact_location": false,
+          "visible_in_people_near_me": true,
+          "visible_in_recent_here": true
+        },
+        "checkins": {
+          "daily_limit": 5,
+          "anonymous_checkin": false
+        },
+        "chat": {
+          "can_initiate_conversations": true,
+          "daily_new_conversations_limit": 5
+        },
+        "filters": {
+          "age_range": true,
+          "spot_type": false,
+          "peak_hours": false
+        },
+        "security": {
+          "panic_button": {
+            "enabled": true,
+            "includes_emergency_call": true,
+            "send_sms_contacts": true,
+            "sms_includes_location_link": false,
+            "sms_includes_spot_name": true,
+            "notify_guardian": false
+          },
+          "can_view_guardian": true
+        },
+        "guardian_role": {
+          "priority_for_guardian_selection": "normal"
+        },
+        "growth": {
+          "invite_friends_for_trial_plus": true
+        }
+      }
+    },
+    "plus": {
+      "name": "Plus",
+      "label": "Anonimato confortavel + mais uso",
+      "price_month_eur": 7.99,
+      "features": {
+        "map": {
+          "spots_full_access": true,
+          "reviews_full_access": true,
+          "risk_alerts_view": true
+        },
+        "profile": {
+          "photos_max": 5,
+          "show_distance_mode": "range_only",
+          "show_exact_location": false,
+          "visible_in_people_near_me": true,
+          "visible_in_recent_here": true,
+          "can_hide_from_people_near_me": true,
+          "can_blur_photo_in_lists": true
+        },
+        "checkins": {
+          "daily_limit": 15,
+          "anonymous_checkin": false
+        },
+        "chat": {
+          "can_initiate_conversations": true,
+          "daily_new_conversations_limit": 30
+        },
+        "filters": {
+          "age_range": true,
+          "spot_type": true,
+          "peak_hours": true
+        },
+        "security": {
+          "panic_button": {
+            "enabled": true,
+            "includes_emergency_call": true,
+            "send_sms_contacts": true,
+            "sms_includes_location_link": true,
+            "sms_includes_spot_name": true,
+            "notify_guardian": false
+          },
+          "can_view_guardian": true
+        },
+        "guardian_role": {
+          "priority_for_guardian_selection": "high"
+        },
+        "growth": {
+          "invite_friends_for_trial_plus": true
+        }
+      }
+    },
+    "pro": {
+      "name": "Pro",
+      "label": "Max privacy + poder de seguranca",
+      "price_month_eur": 14.99,
+      "features": {
+        "map": {
+          "spots_full_access": true,
+          "reviews_full_access": true,
+          "risk_alerts_view": true,
+          "advanced_spot_stats": true
+        },
+        "profile": {
+          "photos_max": 10,
+          "show_distance_mode": "range_only",
+          "show_exact_location": false,
+          "visible_in_people_near_me": true,
+          "visible_in_recent_here": false,
+          "can_hide_from_people_near_me": true,
+          "can_blur_photo_in_lists": true,
+          "stealth_time_windows": true
+        },
+        "checkins": {
+          "daily_limit": 50,
+          "anonymous_checkin": true
+        },
+        "chat": {
+          "can_initiate_conversations": true,
+          "daily_new_conversations_limit": 100
+        },
+        "filters": {
+          "age_range": true,
+          "spot_type": true,
+          "peak_hours": true
+        },
+        "security": {
+          "panic_button": {
+            "enabled": true,
+            "includes_emergency_call": true,
+            "send_sms_contacts": true,
+            "sms_includes_location_link": true,
+            "sms_includes_spot_name": true,
+            "notify_guardian": true,
+            "can_trigger_guardian_mass_alert": false
+          },
+          "can_view_guardian": true
+        },
+        "guardian_role": {
+          "priority_for_guardian_selection": "very_high",
+          "can_receive_panic_alerts_in_spot": true,
+          "can_send_mass_risk_alert_in_spot": true,
+          "mass_alert_daily_limit": 2
+        },
+        "growth": {
+          "invite_friends_for_trial_plus": true
+        }
+      }
+    }
+  },
+  "invite_program": {
+    "enabled": true,
+    "required_invites_for_plus_trial": 3,
+    "plus_trial_days": 7,
+    "trial_applies_to_plan": "plus"
+  }
+}
