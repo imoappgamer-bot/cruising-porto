@@ -1,13 +1,15 @@
-const express = require('express');
+import express from 'express';
+import messageController from '../controllers/messageController.js';
+import { authenticate } from '../middleware/auth.js';
+import { textModerationMiddleware } from '../middleware/contentModeration.js';
+
 const router = express.Router();
-const messageController = require('../controllers/messageController');
-const { authenticate } = require('../middleware/auth');
 
 // Todas as rotas de mensagens requerem autenticação
 router.use(authenticate);
 
-// Enviar mensagem
-router.post('/send', messageController.sendMessage);
+// Enviar mensagem (com moderação de conteúdo)
+router.post('/send', textModerationMiddleware('message'), messageController.sendMessage);
 
 // Obter conversa com um usuário específico
 router.get('/conversation/:user_id', messageController.getConversation);
@@ -27,4 +29,4 @@ router.get('/conversations', messageController.getConversations);
 // Obter contagem de mensagens não lidas
 router.get('/unread-count', messageController.getUnreadCount);
 
-module.exports = router;
+export default router;

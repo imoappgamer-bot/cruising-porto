@@ -1,12 +1,13 @@
 import express from 'express';
-import { 
-  createComment, 
-  getLocationComments, 
-  deleteComment, 
+import {
+  createComment,
+  getLocationComments,
+  deleteComment,
   reportComment,
-  getUserComments 
+  getUserComments
 } from '../controllers/commentController.js';
 import { authenticateToken } from '../middleware/auth.js';
+import { textModerationMiddleware } from '../middleware/contentModeration.js';
 
 const router = express.Router();
 
@@ -14,8 +15,8 @@ const router = express.Router();
 router.get('/location/:locationId', getLocationComments);
 
 // Rotas protegidas
-router.post('/', authenticateToken, createComment);
 router.get('/my-comments', authenticateToken, getUserComments);
+router.post('/', authenticateToken, textModerationMiddleware('comment'), createComment);
 router.delete('/:commentId', authenticateToken, deleteComment);
 router.post('/:commentId/report', authenticateToken, reportComment);
 
