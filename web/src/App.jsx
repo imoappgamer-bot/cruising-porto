@@ -38,33 +38,29 @@ function App() {
   }
 
   return (
-        <ErrorBoundary>
-    <BrowserRouter>
-      {user && <Navbar user={user} onLogout={handleLogout} />}
-      <Routes>
-        <Route 
-          path="/" 
-          element={user ? <Map user={user} /> : <Navigate to="/auth" />} 
-        />
-        <Route 
-          path="/auth" 
-          element={!user ? <Auth onLogin={handleLogin} /> : <Navigate to="/" />} 
-        />
-        <Route 
-          path="/profile" 
-          element={user ? <Profile user={user} /> : <Navigate to="/auth" />} 
-        />
-        <Route 
-          path="/location/:id" 
-          element={user ? <Location user={user} /> : <Navigate to="/auth" />} 
-        />
-      </Routes>
-    </BrowserRouter>
-              </ErrorBoundary>
-
-Commit: feat: Wrap App with ErrorBoundary component
-
-Added ErrorBoundary wrapper around entire app to catch and handle React errors gracefully with Portuguese error messages and recovery options.
+    <ErrorBoundary>
+      <BrowserRouter>
+        {user && <Navbar user={user} onLogout={handleLogout} />}
+        <Routes>
+          <Route 
+            path="/" 
+            element={user ? <Map user={user} /> : <Navigate to="/auth" />} 
+          />
+          <Route 
+            path="/auth" 
+            element={!user ? <Auth onLogin={handleLogin} /> : <Navigate to="/" />} 
+          />
+          <Route 
+            path="/profile" 
+            element={user ? <Profile user={user} /> : <Navigate to="/auth" />} 
+          />
+          <Route 
+            path="/location/:id" 
+            element={user ? <Location user={user} /> : <Navigate to="/auth" />} 
+          />
+        </Routes>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 
