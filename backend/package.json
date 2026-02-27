@@ -18,6 +18,13 @@
     "seed": "node src/seeds/index.js",
     "build": "npm run lint && npm run test"
   },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "testEnvironment": "node",
+    "testMatch": ["**/__tests__/**/*.test.js"]
+  },
   "keywords": [
     "cruising",
     "lgbtq",
@@ -50,6 +57,9 @@
   "devDependencies": {
     "nodemon": "^3.0.1",
     "jest": "^29.7.0",
+    "babel-jest": "^29.7.0",
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
     "supertest": "^6.3.3",
     "eslint": "^8.50.0",
     "eslint-config-airbnb-base": "^15.0.0",
