@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const sequelize = new Sequelize({
-  database: process.env.DATABASE_URL || 'cruising_porto',
+  database: process.env.DB_NAME || process.env.DATABASE_URL || 'cruising_porto',
   username: process.env.DB_USER || 'cruising_user',
   password: process.env.DB_PASSWORD || 'cruising_password',
   host: process.env.DB_HOST || 'localhost',
