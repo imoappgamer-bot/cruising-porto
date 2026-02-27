@@ -37,12 +37,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
 
       - name: Instalar dependencias do backend
         working-directory: ./backend
-        run: npm ci
+        run: npm install
 
       - name: Criar ficheiro .env de teste
         working-directory: ./backend
@@ -78,12 +76,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: web/package-lock.json
 
       - name: Instalar dependencias do frontend
         working-directory: ./web
-        run: npm ci
+        run: npm install
 
       - name: Criar .env para build
         working-directory: ./web
@@ -103,7 +99,7 @@ jobs:
           retention-days: 7
 
   # ============================================
-  # JOB 3: Deploy backend para Railway (apenas em push para main)
+  # JOB 3: Deploy backend para Railway
   # ============================================
   deploy-backend:
     name: Deploy Backend (Railway)
@@ -126,7 +122,7 @@ jobs:
           railway up --service cruising-porto-backend
 
   # ============================================
-  # JOB 4: Deploy frontend para Vercel (apenas em push para main)
+  # JOB 4: Deploy frontend para Vercel
   # ============================================
   deploy-web:
     name: Deploy Web (Vercel)
