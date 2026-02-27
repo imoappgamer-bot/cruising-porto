@@ -1,0 +1,69 @@
+{
+  "expo": {
+    "name": "Cruising Porto",
+    "slug": "cruising-porto",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0f172a"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "app.cruisingporto.mobile",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Cruising Porto usa a tua localizacao para mostrar locais proximos.",
+        "NSLocationAlwaysUsageDescription": "Cruising Porto usa a tua localizacao para notificacoes de locais proximos."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0f172a"
+      },
+      "package": "app.cruisingporto.mobile",
+      "versionCode": 1,
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Permite que o Cruising Porto aceda a tua localizacao."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#00BCD4"
+        }
+      ]
+    ],
+    "extra": {
+      "apiUrl": "http://localhost:5000",
+      "eas": {
+        "projectId": ""
+      }
+    },
+    "owner": "imoappgamer-bot"
+  }
+}
