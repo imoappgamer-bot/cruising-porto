@@ -31,15 +31,17 @@ app.get('/health', (req, res) => {
 });
 
 // Sincronizar banco de dados e iniciar servidor
-sequelize.sync({ alter: process.env.NODE_ENV === 'development' }).then(() => {
-  app.listen(PORT, () => {
-    console.log(`\n♿ Servidor Cruising Porto iniciado na porta ${PORT}`);
-    console.log(`Environment: ${process.env.NODE_ENV}`);
-    console.log(`API disponível em: http://localhost:${PORT}\n`);
+if (process.env.NODE_ENV !== 'test') {
+  sequelize.sync({ alter: process.env.NODE_ENV === 'development' }).then(() => {
+    app.listen(PORT, () => {
+      console.log(`\n Servidor Cruising Porto iniciado na porta ${PORT}`);
+      console.log(`Environment: ${process.env.NODE_ENV}`);
+      console.log(`API disponivel em: http://localhost:${PORT}\n`);
+    });
+  }).catch(error => {
+    console.error('Erro ao conectar com o banco de dados:', error);
+    process.exit(1);
   });
-}).catch(error => {
-  console.error('Erro ao conectar com o banco de dados:', error);
-  process.exit(1);
-});
+}
 
 export default app;
