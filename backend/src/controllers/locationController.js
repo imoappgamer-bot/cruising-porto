@@ -3,10 +3,10 @@ import { Op } from 'sequelize';
 
 // Função para calcular distância entre dois pontos (Haversine)
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  const R = 6371; // Raio da Terra em km
+  const R = 6371;
   const dLat = (lat2 - lat1) * Math.PI / 180;
   const dLon = (lon2 - lon1) * Math.PI / 180;
-  const a = 
+  const a =
     Math.sin(dLat/2) * Math.sin(dLat/2) +
     Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
     Math.sin(dLon/2) * Math.sin(dLon/2);
@@ -18,21 +18,17 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 export const getAllLocations = async (req, res) => {
   try {
     const locations = await Location.findAll({
-      include: [
-        {
-          model: CheckIn,
-          attributes: ['id'],
-          where: { active: true },
-          required: false
-        }
-      ]
+      include: [{
+        model: CheckIn,
+        attributes: ['id'],
+        where: { active: true },
+        required: false
+      }]
     });
-
     const locationsWithStats = locations.map(location => ({
       ...location.toJSON(),
       activeUsers: location.CheckIns ? location.CheckIns.length : 0
     }));
-
     res.json(locationsWithStats);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -43,22 +39,17 @@ export const getAllLocations = async (req, res) => {
 export const getNearbyLocations = async (req, res) => {
   try {
     const { latitude, longitude, radius = 10 } = req.query;
-
     if (!latitude || !longitude) {
       return res.status(400).json({ error: 'Latitude e longitude são obrigatórias' });
     }
-
     const locations = await Location.findAll({
-      include: [
-        {
-          model: CheckIn,
-          attributes: ['id'],
-          where: { active: true },
-          required: false
-        }
-      ]
+      include: [{
+        model: CheckIn,
+        attributes: ['id'],
+        where: { active: true },
+        required: false
+      }]
     });
-
     const nearbyLocations = locations
       .map(location => {
         const distance = calculateDistance(
@@ -75,7 +66,6 @@ export const getNearbyLocations = async (req, res) => {
       })
       .filter(location => location.distance <= radius)
       .sort((a, b) => a.distance - b.distance);
-
     res.json(nearbyLocations);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -95,26 +85,16 @@ export const getLocationById = async (req, res) => {
         },
         {
           model: Comment,
-          include: [{
-            model: User,
-            attributes: ['id', 'username']
-          }],
+          include: [{ model: User, attributes: ['id', 'username'] }],
           order: [['createdAt', 'DESC']],
           limit: 20
         }
       ]
     });
-
     if (!location) {
       return res.status(404).json({ error: 'Local não encontrado' });
     }
-
-    const locationData = {
-      ...location.toJSON(),
-      activeUsers: location.CheckIns ? location.CheckIns.length : 0
-    };
-
-    res.json(locationData);
+    res.json({ ...location.toJSON(), activeUsers: location.CheckIns ? location.CheckIns.length : 0 });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -125,31 +105,79 @@ export const rateLocation = async (req, res) => {
   try {
     const { rating } = req.body;
     const location = await Location.findByPk(req.params.id);
-
-    if (!location) {
-      return res.status(404).json({ error: 'Local não encontrado' });
-    }
-
-    if (rating < 1 || rating > 5) {
-      return res.status(400).json({ error: 'Avaliação deve estar entre 1 e 5' });
-    }
-
-    // Atualizar média de avaliação
+    if (!location) return res.status(404).json({ error: 'Local não encontrado' });
+    if (rating < 1 || rating > 5) return res.status(400).json({ error: 'Avaliação deve estar entre 1 e 5' });
     const totalRatings = location.totalRatings || 0;
     const currentRating = location.rating || 0;
     const newTotalRatings = totalRatings + 1;
     const newRating = ((currentRating * totalRatings) + rating) / newTotalRatings;
+    await location.update({ rating: newRating, totalRatings: newTotalRatings });
+    res.json({ message: 'Avaliação adicionada com sucesso', rating: newRating, totalRatings: newTotalRatings });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-    await location.update({
-      rating: newRating,
-      totalRatings: newTotalRatings
-    });
+// Reportar um local
+export const reportLocation = async (req, res) => {
+  try {
+    const { reason } = req.body;
+    const location = await Location.findByPk(req.params.id);
+    if (!location) return res.status(404).json({ error: 'Local não encontrado' });
+    await location.increment('reportCount', { by: 1 });
+    res.json({ message: 'Local reportado com sucesso. Obrigado pelo feedback.' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-    res.json({ 
-      message: 'Avaliação adicionada com sucesso',
-      rating: newRating,
-      totalRatings: newTotalRatings
+// Criar novo local
+export const createLocation = async (req, res) => {
+  try {
+    const { name, description, latitude, longitude, category, address } = req.body;
+    if (!name || !latitude || !longitude) {
+      return res.status(400).json({ error: 'Nome, latitude e longitude são obrigatórios' });
+    }
+    const location = await Location.create({
+      name,
+      description,
+      latitude: parseFloat(latitude),
+      longitude: parseFloat(longitude),
+      category,
+      address,
+      createdBy: req.user.id
     });
+    res.status(201).json(location);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Atualizar local
+export const updateLocation = async (req, res) => {
+  try {
+    const location = await Location.findByPk(req.params.id);
+    if (!location) return res.status(404).json({ error: 'Local não encontrado' });
+    if (location.createdBy !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Sem permissão para editar este local' });
+    }
+    await location.update(req.body);
+    res.json(location);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Eliminar local
+export const deleteLocation = async (req, res) => {
+  try {
+    const location = await Location.findByPk(req.params.id);
+    if (!location) return res.status(404).json({ error: 'Local não encontrado' });
+    if (location.createdBy !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Sem permissão para eliminar este local' });
+    }
+    await location.destroy();
+    res.json({ message: 'Local eliminado com sucesso' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
